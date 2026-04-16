@@ -22,7 +22,7 @@ Une liste contenant :
 }
 }
 \description{
-Verifie les trois regles du Slitherlink :
+Verifier les trois regles du Slitherlink :
 \enumerate{
 \item Chaque indice de case est respecte (nombre d'aretes tracees
 autour de la case = indice).

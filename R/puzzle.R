@@ -52,7 +52,19 @@ new_puzzle <- function(clues) {
   class(puzzle) <- "slitherlink"
   puzzle
 }
-
+#' Basculer l'etat d'une arete
+#' @param p Un objet slitherlink
+#' @param type "h" ou "v"
+#' @param r,c Coordonnees de l'arete
+#' @export
+toggle_edge <- function(p, type, r, c) {
+  if (type == "h") {
+    p$h_edges[r, c] <- 1L - p$h_edges[r, c]
+  } else {
+    p$v_edges[r, c] <- 1L - p$v_edges[r, c]
+  }
+  p
+}
 
 #' Methode print pour les objets slitherlink
 #'
@@ -73,4 +85,22 @@ print.slitherlink <- function(x, ...) {
       "/", length(x$h_edges) + length(x$v_edges), "\n")
   invisible(x)
 }
+#' Basculer l'etat d'une arete
+#'
+#' @param p Un objet de classe `slitherlink`.
+#' @param type Caractere, "h" pour une arete horizontale, "v" pour une verticale.
+#' @param r Indice de la ligne.
+#' @param c Indice de la colonne.
+#'
+#' @return L'objet `slitherlink` avec l'arete modifiee.
+#' @export
+toggle_edge <- function(p, type, r, c) {
+  if (type == "h") {
+    p$h_edges[r, c] <- 1L - p$h_edges[r, c]
+  } else {
+    p$v_edges[r, c] <- 1L - p$v_edges[r, c]
+  }
+  p
+}
+
 
