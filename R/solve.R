@@ -1,6 +1,6 @@
 #' Verifier si un puzzle Slitherlink est resolu
 #'
-#' Verifie les trois regles du Slitherlink :
+#' Verifier les trois regles du Slitherlink :
 #' 1. Chaque indice de case est respecte (nombre d'aretes tracees
 #'    autour de la case = indice).
 #' 2. A chaque point, il y a exactement 0 ou 2 aretes incidentes.

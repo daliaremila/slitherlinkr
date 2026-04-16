@@ -1,6 +1,6 @@
+
 # Script de generation des grilles d'exemple
 # Execute une seule fois pour creer les fichiers dans data/
-# Regenerer si on change les grilles.
 
 # ---- Grille facile : 3 x 4 ----
 puzzle_easy <- slitherlinkr::new_puzzle(
@@ -9,7 +9,7 @@ puzzle_easy <- slitherlinkr::new_puzzle(
            NA, 0, NA, 3), nrow = 3, byrow = TRUE)
 )
 
-# ---- Grille moyenne : 5 x 5 (exemple du sujet) ----
+# ---- Grille moyenne : 5 x 5 ----
 puzzle_medium <- slitherlinkr::new_puzzle(
   matrix(c(NA,  2,  2, NA, NA,
            NA, NA, NA,  3,  2,
@@ -29,5 +29,5 @@ puzzle_hard <- slitherlinkr::new_puzzle(
            NA, NA, NA, NA,  3,  2, NA), nrow = 7, byrow = TRUE)
 )
 
-# Sauvegarder dans data/ (genere data/puzzle_easy.rda, etc.)
+# Sauvegarder dans data/
 usethis::use_data(puzzle_easy, puzzle_medium, puzzle_hard, overwrite = TRUE)
