@@ -73,3 +73,4 @@ print.slitherlink <- function(x, ...) {
       "/", length(x$h_edges) + length(x$v_edges), "\n")
   invisible(x)
 }
+
