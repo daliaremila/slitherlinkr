@@ -1,0 +1,19 @@
+Package: slitherlinkr
+Title: Jeu Slitherlink et Application Shiny
+Version: 0.1.0
+Authors@R: c(
+    person("Dalia", "Remila", email = "dalia.remila@etu.umontpellier.fr", role = c("aut", "cre")),
+    person("Ali", "Dahoud", email = "aly.dahoud@etu.umontpellier.fr", role = "aut"))
+Description: Implementation du jeu de logique Slitherlink en R.
+    Fournit des fonctions pour creer, afficher et verifier des grilles,
+    ainsi qu'une application Shiny interactive pour y jouer.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    ggplot2,
+    shiny
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
