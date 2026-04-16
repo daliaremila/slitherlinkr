@@ -1,2 +1,2 @@
 # slitherlinkr
-Package R et application Shiny pour le jeu Slitherlink
+Contributeurs : Dalia Remila et Ali Dahoud
