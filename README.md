@@ -1,6 +1,6 @@
 # 🧩 slitherlinkr
 
-**Projet R & Shiny — Université de Montpellier**
+**Slitherlink & Shiny — **
 
 `slitherlinkr` est une bibliothèque R accompagnée d’une application Shiny interactive pour le jeu de logique **Slitherlink**.  
 Ce projet a été réalisé dans le cadre du module de programmation R dirigé par Jean‑Michel Marin.
