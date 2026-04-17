@@ -45,9 +45,7 @@ où :
 
 - **Contrainte de degré** :  
   Pour tout sommet \(v \in V\), son degré doit être 0 ou 2 :
-  \[
-  \forall v \in V,\quad d(v) \in \{0, 2\}
-  \]
+  $\forall v \in V,\quad d(v) \in \{0, 2\}$
 
 - **Contrainte de face** (par case) :  
   Chaque case contient un indice \(n\) indiquant le nombre d’arêtes actives autour de la case.  
