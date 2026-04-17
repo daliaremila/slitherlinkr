@@ -157,11 +157,12 @@ L’algorithme affiche un message de succès ou échec selon le résultat.
   Adapter la mise en page et les interactions pour écrans tactiles.
 
 ## 📂 Structure du projet
-.
+```
 ├── R/ # Logique du jeu (fonctions manipulant la grille, états, vérifications)
 ├── data/ # Puzzles prédéfinis
 ├── app.R # Application Shiny (interface + réactivité)
 ├── DESCRIPTION # Métadonnées du package R
+```
 
 ## 👤 Auteurs
 
