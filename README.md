@@ -62,13 +62,13 @@ où :
 
 ### Détection des clics
 
-L’application calcule la distance euclidienne entre le clic utilisateur et le segment le plus proche :
+L'application calcule la distance euclidienne entre le clic utilisateur et le segment le plus proche :
 
-\[
+$$
 d = \sqrt{(x - x_u)^2 + (y - y_u)^2}
-\]
+$$
 
-où \((x_u, y_u)\) est la position du clic et \((x, y)\) représente les coordonnées d’un segment.
+où $(x_u, y_u)$ est la position du clic et $(x, y)$ représente les coordonnées d'un segment.
 
 ### Gestion de l’état
 
