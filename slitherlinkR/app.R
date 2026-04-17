@@ -1,7 +1,7 @@
 library(shiny)
 
 ui <- fluidPage(
-  titlePanel("Slitherlink Expert - Université de Montpellier"),
+  titlePanel("Slitherlink  - Dalia & Aly"),
   sidebarLayout(
     sidebarPanel(
       selectInput("level", "Difficulté :", 
