@@ -15,7 +15,7 @@ puzzle_easy <- slitherlinkr::new_puzzle(
            2, 1, 2), nrow = 3, byrow = TRUE)
 )
 
-# ---- Grille moyenne : 5 x 5 (exemple du sujet PDF) ----
+# ---- Grille moyenne : 5 x 5  ----
 puzzle_medium <- slitherlinkr::new_puzzle(
   matrix(c( 2,  2, NA, NA, NA,
             NA, NA, NA,  3,  2,

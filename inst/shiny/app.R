@@ -1,37 +1,42 @@
 library(shiny)
-library(slitherlinkr)
 library(ggplot2)
+# source("R/puzzle.R")
+# source("R/solve.R")
+# source("R/plot.R")
+# source("R/puzzles.R")
 
+# --- Code de l'Interface Utilisateur (UI) ---
 ui <- fluidPage(
-  titlePanel("Slitherlink"),
+  titlePanel("Slitherlink Expert"),
   sidebarLayout(
     sidebarPanel(
       width = 3,
       selectInput("level", "Choisir un niveau :",
-                  choices = c("Facile" = "easy",
-                              "Moyen" = "medium",
-                              "Difficile" = "hard")),
-      actionButton("reset", "Reinitialiser", width = "100%"),
+                  choices = c("Facile" = "easy", "Moyen" = "medium", "Difficile" = "hard")),
+      radioButtons("mode", "Action du clic :",
+                   choices = c("Ligne" = "line", "Croix (X)" = "cross")),
+      actionButton("reset", "Réinitialiser", width = "100%"),
       hr(),
-      actionButton("check", "Verifier ma solution", width = "100%"),
+      actionButton("check", "Vérifier ma solution", width = "100%"),
       hr(),
-      verbatimTextOutput("status"),
-      hr(),
-      verbatimTextOutput("debug")
+      verbatimTextOutput("status")
     ),
     mainPanel(
       width = 9,
-      plotOutput("game_plot", click = "plot_click", height = "600px",
-                 width = "600px")
+      plotOutput("game_plot", click = "plot_click", height = "600px", width = "600px")
     )
   )
 )
 
+# --- Code du Serveur ---
 server <- function(input, output, session) {
   
+  # 1. Stockage du puzzle dans une valeur réactive
   game <- reactiveValues(p = NULL)
   
+  # 2. Initialisation du niveau
   observeEvent(input$level, {
+    # On suppose que puzzle_easy/medium/hard sont chargés via puzzles.R
     puz <- switch(input$level,
                   "easy"   = puzzle_easy,
                   "medium" = puzzle_medium,
@@ -39,107 +44,24 @@ server <- function(input, output, session) {
     game$p <- new_puzzle(puz$clues)
   }, ignoreNULL = FALSE)
   
+  # 3. Réinitialisation
   observeEvent(input$reset, {
+    req(game$p)
     game$p <- new_puzzle(game$p$clues)
   })
   
-  # Dessiner la grille directement (sans plot.slitherlink)
+  # 4. Rendu du graphique
   output$game_plot <- renderPlot({
     req(game$p)
-    p <- game$p
-    n <- p$n
-    m <- p$m
-    
-    # Points de la grille
-    points_df <- expand.grid(row = 0:n, col = 0:m)
-    
-    # Aretes
-    edges <- data.frame(x = numeric(), y = numeric(),
-                        xend = numeric(), yend = numeric(),
-                        traced = logical())
-    
-    for (i in 0:n) {
-      for (j in 1:m) {
-        edges <- rbind(edges, data.frame(
-          x = j - 1, y = n - i, xend = j, yend = n - i,
-          traced = (p$h_edges[i + 1, j] == 1)
-        ))
-      }
-    }
-    
-    for (i in 1:n) {
-      for (j in 0:m) {
-        edges <- rbind(edges, data.frame(
-          x = j, y = n - (i - 1), xend = j, yend = n - i,
-          traced = (p$v_edges[i, j + 1] == 1)
-        ))
-      }
-    }
-    
-    # Indices
-    clues_df <- data.frame(col = numeric(), row = numeric(),
-                           label = character())
-    for (i in 1:n) {
-      for (j in 1:m) {
-        if (!is.na(p$clues[i, j])) {
-          clues_df <- rbind(clues_df, data.frame(
-            col = j - 0.5,
-            row = n - i + 0.5,
-            label = as.character(p$clues[i, j])
-          ))
-        }
-      }
-    }
-    
-    # Construire le ggplot
-    g <- ggplot()
-    
-    # Aretes non tracees
-    if (any(!edges$traced)) {
-      g <- g + geom_segment(
-        data = edges[!edges$traced, ],
-        aes(x = x, y = y, xend = xend, yend = yend),
-        color = "grey80", linewidth = 0.3
-      )
-    }
-    
-    # Aretes tracees
-    if (any(edges$traced)) {
-      g <- g + geom_segment(
-        data = edges[edges$traced, ],
-        aes(x = x, y = y, xend = xend, yend = yend),
-        color = "black", linewidth = 2
-      )
-    }
-    
-    # Points
-    g <- g + geom_point(
-      data = data.frame(x = points_df$col, y = n - points_df$row),
-      aes(x = x, y = y),
-      size = 2.5, color = "black"
-    )
-    
-    # Indices
-    if (nrow(clues_df) > 0) {
-      g <- g + geom_text(
-        data = clues_df,
-        aes(x = col, y = row, label = label),
-        size = 8, fontface = "bold"
-      )
-    }
-    
-    g +
-      coord_cartesian(xlim = c(-0.3, m + 0.3), ylim = c(-0.3, n + 0.3)) +
-      theme_void()
+    plot(game$p) 
   })
   
-  # Gestion du clic
+  # 5. Gestion du clic (Calcul de proximité)
   observeEvent(input$plot_click, {
     req(game$p)
     
     x <- input$plot_click$x
     y <- input$plot_click$y
-    
     if (is.null(x) || is.null(y)) return()
     
     n <- game$p$n
@@ -151,13 +73,11 @@ server <- function(input, output, session) {
     best_r <- NULL
     best_c <- NULL
     
-    # Aretes horizontales
-    # Dans notre systeme : arete h[i+1, j] est dessinee a y = n - i, x entre j-1 et j
-    # Centre : (j - 0.5, n - i)
+    # Chercher l'arête horizontale
     for (i in 0:n) {
       for (j in 1:m) {
         cx <- j - 0.5
-        cy <- n - i
+        cy <- i 
         d <- sqrt((x - cx)^2 + (y - cy)^2)
         if (d < best_dist && d < seuil) {
           best_dist <- d
@@ -168,13 +88,11 @@ server <- function(input, output, session) {
       }
     }
     
-    # Aretes verticales
-    # arete v[i, j+1] est dessinee de y = n-(i-1) a y = n-i, x = j
-    # Centre : (j, n - i + 0.5)
+    # Chercher l'arête verticale
     for (i in 1:n) {
       for (j in 0:m) {
         cx <- j
-        cy <- n - i + 0.5
+        cy <- i - 0.5
         d <- sqrt((x - cx)^2 + (y - cy)^2)
         if (d < best_dist && d < seuil) {
           best_dist <- d
@@ -185,38 +103,31 @@ server <- function(input, output, session) {
       }
     }
     
-    output$debug <- renderText({
-      paste0("x=", round(x, 2), " y=", round(y, 2),
-             " type=", ifelse(is.null(best_type), "AUCUN", best_type),
-             " r=", best_r, " c=", best_c,
-             " dist=", round(best_dist, 3))
-    })
-    
+    # SÉCURITÉ : On modifie uniquement si une arête est touchée
     if (!is.null(best_type)) {
-      game$p <- toggle_edge(game$p, best_type, best_r, best_c)
+      game$p <- toggle_edge(game$p, best_type, best_r, best_c, mode = input$mode)
     }
   })
   
+  # 6. Vérification de la victoire
   observeEvent(input$check, {
     req(game$p)
     res <- is_solved(game$p)
+    
     if (res$solved) {
-      msg <- "BRAVO ! Puzzle resolu !"
+      output$status <- renderText("BRAVO ! Puzzle résolu !")
     } else {
-      problemes <- c()
-      if (!res$clues_ok) problemes <- c(problemes, "Indices non respectes.")
-      if (!res$vertices_ok) problemes <- c(problemes, "Points incorrects.")
-      if (!res$single_loop) {
-        if (res$n_loops == 0) {
-          problemes <- c(problemes, "Aucune arete tracee.")
-        } else {
-          problemes <- c(problemes, paste0(res$n_loops, " boucle(s) au lieu d'une seule."))
-        }
-      }
-      msg <- paste("Pas encore...\n", paste(problemes, collapse = "\n"))
+      # Construction du message d'erreur
+      msg <- "Échec :\n"
+      if (!res$clues_ok)   msg <- paste0(msg, "- Indices incorrects\n")
+      if (!res$vertices_ok) msg <- paste0(msg, "- Sommets incorrects (entree/sortie)\n")
+      if (res$n_loops == 0) msg <- paste0(msg, "- Aucune ligne tracee\n")
+      if (res$n_loops > 1)  msg <- paste0(msg, "- Trop de boucles (formez un seul circuit)\n")
+      
+      output$status <- renderText(msg)
     }
-    output$status <- renderText(msg)
   })
 }
 
+# Lancement de l'app
 shinyApp(ui, server)
