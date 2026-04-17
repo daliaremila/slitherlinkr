@@ -1,9 +1,8 @@
-#' @export
 new_puzzle <- function(clues) {
   n <- nrow(clues); m <- ncol(clues)
   puzzle <- list(
     clues = clues,
-    h_edges = matrix(0L, nrow = n + 1, ncol = m), # 0:vide, 1:noir, -1:croix
+    h_edges = matrix(0L, nrow = n + 1, ncol = m),
     v_edges = matrix(0L, nrow = n, ncol = m + 1),
     n = n, m = m
   )
@@ -11,7 +10,6 @@ new_puzzle <- function(clues) {
   return(puzzle)
 }
 
-#' @export
 toggle_edge <- function(p, type, r, c, mode = "line") {
   if (type == "h") {
     curr <- p$h_edges[r, c]
