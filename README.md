@@ -131,9 +131,7 @@ L’algorithme affiche un message de succès ou échec selon le résultat.
    Compte le nombre d’arêtes actives autour de chaque case et les compare à l’indice \(n\).
 
 2. **Vérification des degrés des sommets** :  
-   Pour chaque sommet, vérifie que $$
-d(v) \in \{0, 2\}
-$$
+   Pour chaque sommet, vérifie que $d(v) \in \{0, 2\}$
 
 3. **Vérification de la connectivité (boucle unique)** :  
    Effectue un parcours de graphe (DFS ou BFS) sur les arêtes actives pour vérifier qu’il n’y a **qu’une seule composante connexe**.
