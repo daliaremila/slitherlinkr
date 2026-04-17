@@ -1,8 +1,7 @@
 #' Verifier si un puzzle Slitherlink est resolu
 #'
-#' Verifier les trois regles du Slitherlink :
-#' 1. Chaque indice de case est respecte (nombre d'aretes tracees
-#'    autour de la case = indice).
+#' Verifie les trois regles du Slitherlink :
+#' 1. Chaque indice de case est respecte.
 #' 2. A chaque point, il y a exactement 0 ou 2 aretes incidentes.
 #' 3. Les aretes tracees forment une seule boucle fermee.
 #'
@@ -85,8 +84,8 @@ is_solved <- function(puzzle) {
 }
 
 
-# Fonction interne : compte les composantes connexes formees
-# par les aretes tracees (via Union-Find).
+# Fonction interne : compte les composantes connexes
+# formees par les aretes tracees (via Union-Find).
 .count_loops <- function(h, v, n, m) {
   vertex_id <- function(i, j) i * (m + 1) + j
   

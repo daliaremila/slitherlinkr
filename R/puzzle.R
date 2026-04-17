@@ -25,20 +25,19 @@
 #'
 #' @export
 new_puzzle <- function(clues) {
-  # Verifications de base
   if (!is.matrix(clues)) {
     stop("'clues' doit etre une matrice.")
   }
   valeurs <- as.vector(clues)
   valeurs <- valeurs[!is.na(valeurs)]
-  if (any(valeurs < 0) || any(valeurs > 3) || any(valeurs != floor(valeurs))) {
+  if (length(valeurs) > 0 &&
+      (any(valeurs < 0) || any(valeurs > 3) || any(valeurs != floor(valeurs)))) {
     stop("'clues' ne doit contenir que des entiers 0-3 ou NA.")
   }
   
   n <- nrow(clues)
   m <- ncol(clues)
   
-  # Aretes initialisees a 0 (non tracees)
   h_edges <- matrix(0L, nrow = n + 1, ncol = m)
   v_edges <- matrix(0L, nrow = n, ncol = m + 1)
   
@@ -52,10 +51,17 @@ new_puzzle <- function(clues) {
   class(puzzle) <- "slitherlink"
   puzzle
 }
-#' Basculer l'etat d'une arete
-#' @param p Un objet slitherlink
-#' @param type "h" ou "v"
-#' @param r,c Coordonnees de l'arete
+
+
+#' Basculer l'etat d'une arete (tracee / non tracee)
+#'
+#' @param p Un objet de classe `slitherlink`.
+#' @param type Caractere : `"h"` pour horizontale, `"v"` pour verticale.
+#' @param r Indice de ligne de l'arete dans la matrice correspondante.
+#' @param c Indice de colonne de l'arete dans la matrice correspondante.
+#'
+#' @return L'objet `slitherlink` modifie.
+#'
 #' @export
 toggle_edge <- function(p, type, r, c) {
   if (type == "h") {
@@ -65,6 +71,7 @@ toggle_edge <- function(p, type, r, c) {
   }
   p
 }
+
 
 #' Methode print pour les objets slitherlink
 #'
@@ -84,23 +91,6 @@ print.slitherlink <- function(x, ...) {
   cat("  Aretes tracees   :", sum(x$h_edges) + sum(x$v_edges),
       "/", length(x$h_edges) + length(x$v_edges), "\n")
   invisible(x)
-}
-#' Basculer l'etat d'une arete
-#'
-#' @param p Un objet de classe `slitherlink`.
-#' @param type Caractere, "h" pour une arete horizontale, "v" pour une verticale.
-#' @param r Indice de la ligne.
-#' @param c Indice de la colonne.
-#'
-#' @return L'objet `slitherlink` avec l'arete modifiee.
-#' @export
-toggle_edge <- function(p, type, r, c) {
-  if (type == "h") {
-    p$h_edges[r, c] <- 1L - p$h_edges[r, c]
-  } else {
-    p$v_edges[r, c] <- 1L - p$v_edges[r, c]
-  }
-  p
 }
 
 

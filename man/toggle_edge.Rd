@@ -2,28 +2,22 @@
 % Please edit documentation in R/puzzle.R
 \name{toggle_edge}
 \alias{toggle_edge}
-\title{Basculer l'etat d'une arete}
+\title{Basculer l'etat d'une arete (tracee / non tracee)}
 \usage{
-toggle_edge(p, type, r, c)
-
 toggle_edge(p, type, r, c)
 }
 \arguments{
 \item{p}{Un objet de classe \code{slitherlink}.}
 
-\item{type}{Caractere, "h" pour une arete horizontale, "v" pour une verticale.}
+\item{type}{Caractere : \code{"h"} pour horizontale, \code{"v"} pour verticale.}
 
-\item{r, c}{Coordonnees de l'arete}
+\item{r}{Indice de ligne de l'arete dans la matrice correspondante.}
 
-\item{c}{Indice de la colonne.}
-
-\item{r}{Indice de la ligne.}
+\item{c}{Indice de colonne de l'arete dans la matrice correspondante.}
 }
 \value{
-L'objet \code{slitherlink} avec l'arete modifiee.
+L'objet \code{slitherlink} modifie.
 }
 \description{
-Basculer l'etat d'une arete
-
-Basculer l'etat d'une arete
+Basculer l'etat d'une arete (tracee / non tracee)
 }

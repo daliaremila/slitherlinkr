@@ -22,10 +22,9 @@ Une liste contenant :
 }
 }
 \description{
-Verifier les trois regles du Slitherlink :
+Verifie les trois regles du Slitherlink :
 \enumerate{
-\item Chaque indice de case est respecte (nombre d'aretes tracees
-autour de la case = indice).
+\item Chaque indice de case est respecte.
 \item A chaque point, il y a exactement 0 ou 2 aretes incidentes.
 \item Les aretes tracees forment une seule boucle fermee.
 }
