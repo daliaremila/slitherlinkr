@@ -106,6 +106,15 @@ L’utilisateur peut choisir le niveau dans l’interface.
 - **Mode Ligne** : permet de tracer la boucle (valider une arête).
 - **Mode Croix** : permet d’exclure une arête (marquer qu’elle ne fait pas partie de la solution).
 
+Contrairement à un jeu statique, **Slitherlink & Shiny** génère des défis uniques à la demande :
+
+* **Nouvelle Grille instantanée** : Le bouton `Nouvelle Grille` réinitialise le plateau et génère une nouvelle configuration d'indices basée sur des modèles probabilistes.
+* **Difficulté Adaptative** : 
+    * **Débutant (3x3)** : Idéal pour apprendre les mécaniques de base.
+    * **Intermédiaire (5x5)** : Un équilibre entre réflexion et rapidité.
+    * **Expert (7x7)** : Pour les utilisateurs expérimentés cherchant un défi complexe.
+* **Système Aléatoire** : Chaque changement de niveau ou clic sur "Reset" recalcule la position et la valeur des indices pour garantir qu'aucune partie ne se ressemble.
+
 ### ✅ Vérification
 
 Un bouton **“Vérifier”** permet de tester si :
