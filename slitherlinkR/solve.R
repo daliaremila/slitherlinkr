@@ -1,7 +1,5 @@
-#' @export
 is_solved <- function(p) {
   h <- (p$h_edges == 1); v <- (p$v_edges == 1)
-  # Vérifier les chiffres [cite: 20, 21]
   for (i in 1:p$n) {
     for (j in 1:p$m) {
       if (!is.na(p$clues[i, j])) {
@@ -10,7 +8,6 @@ is_solved <- function(p) {
       }
     }
   }
-  # Vérifier les sommets (0 ou 2 segments) [cite: 18]
   for (i in 0:p$n) {
     for (j in 0:p$m) {
       deg <- 0
