@@ -33,9 +33,7 @@ L’objectif est de concevoir un **moteur de jeu Slitherlink** capable de :
 
 Le jeu est modélisé comme un **graphe** :
 
-\[
-G = (V,E)
-\]
+$G = (V,E)$
 
 où :
 - \(V\) représente l’ensemble des **sommets**.
