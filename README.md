@@ -1,74 +1,176 @@
-🧩 Slitherlink Expert - Projet R & Shiny (UM)
+# 🧩 slitherlinkr
 
-Ce projet consiste en la création d'une bibliothèque R et d'une application Shiny interactive pour le jeu de logique Slitherlink.
-Ce travail a été réalisé dans le cadre du module de programmation R dirigé par Jean-Michel Marin à l'Université de Montpellier.
+**Projet R & Shiny — Université de Montpellier**
 
-🚀 Lancement rapide
+`slitherlinkr` est une bibliothèque R accompagnée d’une application Shiny interactive pour le jeu de logique **Slitherlink**.  
+Ce projet a été réalisé dans le cadre du module de programmation R dirigé par Jean‑Michel Marin.
 
-Pour tester l'application avec la version la plus récente, exécutez la commande suivante dans votre console R :
+---
 
+## 🚀 Lancement rapide
+
+Pour lancer directement l’application Shiny :
+
+```r
 shiny::runGitHub("slitherlinkr", "daliaremila", ref = "main")
-🎯 But du projet
+```
 
-L'objectif était de concevoir un moteur de jeu complet capable de :
+---
 
-Générer et afficher des grilles de Slitherlink de différentes tailles
-Gérer les interactions utilisateurs (clics pour tracer des lignes ou placer des croix)
-Vérifier la validité de la solution selon les règles mathématiques du jeu
-🛠️ Méthodologie
+## 🎯 Objectif du projet
 
-Le projet a été structuré comme un package R afin de garantir la modularité et la maintenabilité du code.
+L’objectif est de concevoir un **moteur de jeu Slitherlink** capable de :
 
-1. Modélisation mathématique
+- Générer des grilles de différentes tailles.
+- Gérer les interactions utilisateur (tracés de lignes et croix).
+- Vérifier automatiquement la validité de la solution.
 
-Le Slitherlink est modélisé comme un problème de recherche de cycle unique dans un graphe grille :
+---
 
-G=(V,E)
-Contrainte de degré : chaque sommet v doit avoir un degré d(v)∈{0,2}
-Contrainte de face : pour chaque case avec un indice n, la somme des arêtes activées autour doit être égale à n
-Théorème de Jordan : un algorithme de parcours de graphe vérifie qu'il existe une seule composante connexe (une seule boucle)
-2. Algorithmes de l'interface
-Détection de proximité :
-Calcul de la distance euclidienne entre le clic utilisateur (x
-u
-	​
+## 🛠️ Méthodologie
 
-,y
-u
-	​
+### 🔹 Modélisation mathématique
 
-) et le milieu de chaque segment pour identifier l’arête sélectionnée
-Gestion d’état :
-Utilisation de reactiveValues pour stocker l’état du jeu et permettre une mise à jour instantanée sans rechargement
-📚 Bibliothèques utilisées
+Le jeu est modélisé comme un **graphe** :
 
-Le projet s'appuie sur l'écosystème Tidyverse et Shiny :
+\[
+G = (V,E)
+\]
 
-shiny : structure de l'application web et gestion de la réactivité
-ggplot2 : rendu graphique de la grille
-geom_segment() pour les lignes
-geom_text() pour les indices
-dplyr : manipulation des données
-grid : gestion fine des unités graphiques
-🎮 Fonctionnement de l'application
-Sélection du niveau :
-3x3 (facile)
-5x5 (moyen)
-7x7 (difficile)
-Outils de jeu :
-Mode Ligne : tracer les segments de la boucle
-Mode Croix : marquer les arêtes vides
-Vérification :
-Un bouton analyse la grille et confirme si toutes les contraintes sont respectées
-📂 Structure du dépôt
+où :
+- \(V\) représente l’ensemble des **sommets**.
+- \(E\) représente l’ensemble des **arêtes**.
+
+### Contraintes du jeu
+
+- **Contrainte de degré** :  
+  Pour tout sommet \(v \in V\), son degré doit être 0 ou 2 :
+  \[
+  \forall v \in V,\quad d(v) \in \{0, 2\}
+  \]
+
+- **Contrainte de face** (par case) :  
+  Chaque case contient un indice \(n\) indiquant le nombre d’arêtes actives autour de la case.  
+  On vérifie que le nombre de segments actifs autour de la case est exactement égal à \(n\).
+
+- **Boucle unique** :  
+  La solution doit former **une seule boucle fermée**, vérifiée via un parcours de graphe (par exemple, DFS ou BFS) sur les arêtes actives.
+
+---
+
+## 🔹 Interface et algorithmes
+
+### Détection des clics
+
+L’application calcule la distance euclidienne entre le clic utilisateur et le segment le plus proche :
+
+\[
+d = \sqrt{(x - x_u)^2 + (y - y_u)^2}
+\]
+
+où \((x_u, y_u)\) est la position du clic et \((x, y)\) représente les coordonnées d’un segment.
+
+### Gestion de l’état
+
+L’état de la grille (segments actifs, croix, indices, etc.) est géré via :
+
+```r
+reactiveValues()
+```
+
+### Mise à jour dynamique
+
+L’interface s’appuie sur la **réactivité Shiny** pour mettre à jour la grille sans rechargement de page.
+
+---
+
+## 📚 Technologies utilisées
+
+- `shiny` → Application web interactive.
+- `ggplot2` → Rendu graphique de la grille.
+- `dplyr` → Manipulation des données (grille, arêtes, états).
+- `grid` → Gestion graphique avancée (si nécessaire).
+
+---
+
+## 🎮 Fonctionnement de l'application
+
+### 🔢 Niveaux
+
+| Taille   | Difficulté |
+|---------|-----------|
+| 3 × 3   | Facile    |
+| 5 × 5   | Moyen     |
+| 7 × 7   | Difficile |
+
+L’utilisateur peut choisir le niveau dans l’interface.
+
+### 🎛️ Modes de jeu
+
+- **Mode Ligne** : permet de tracer la boucle (valider une arête).
+- **Mode Croix** : permet d’exclure une arête (marquer qu’elle ne fait pas partie de la solution).
+
+### ✅ Vérification
+
+Un bouton **“Vérifier”** permet de tester si :
+
+- Toutes les contraintes locales (cases) sont respectées.
+- Les contraintes de degré sur les sommets sont satisfaites.
+- La solution forme une **unique boucle fermée**.
+- Aucun segment invalide n’est présent.
+
+L’algorithme affiche un message de succès ou échec selon le résultat.
+
+---
+
+## 🧠 Logique de résolution (résumé)
+
+À chaque vérification, l’application effectue :
+
+1. **Vérification des contraintes locales (cases)** :  
+   Compte le nombre d’arêtes actives autour de chaque case et les compare à l’indice \(n\).
+
+2. **Vérification des degrés des sommets** :  
+   Pour chaque sommet, vérifie que \(d(v) \in \{0, 2\}\).
+
+3. **Vérification de la connectivité (boucle unique)** :  
+   Effectue un parcours de graphe (DFS ou BFS) sur les arêtes actives pour vérifier qu’il n’y a **qu’une seule composante connexe**.
+
+4. **Validation ou rejet** :  
+   Si toutes les conditions sont satisfaites, la solution est validée ; sinon, un message d’erreur est affiché.
+
+---
+
+---
+
+## ✨ Améliorations possibles
+
+- **Génération automatique de grilles** :  
+  Ajouter un générateur de puzzles aléatoires respectant les contraintes.
+
+- **Ajout d’un solveur intelligent** :  
+  Implémenter un algorithme de résolution automatique (backtracking, CSP, etc.).
+
+- **Interface plus intuitive** :  
+  - Hover pour surligner les segments voisins.  
+  - Aperçu interactif de la prochaine action.
+
+- **Mode mobile optimisé** :  
+  Adapter la mise en page et les interactions pour écrans tactiles.
+
+## 📂 Structure du projet
 .
-├── R/            # Logique du jeu et fonctions
-├── data/         # Données des puzzles
-├── app.R         # Application Shiny (point d’entrée)
+├── R/            # Logique du jeu
+├── data/         # Puzzles
+├── app.R         # Application Shiny
 ├── DESCRIPTION   # Métadonnées du package
-👩‍💻 Auteur
 
-Dalia Remila
+## 👤 Auteurs
 
-🎓 Université : Montpellier (UM)
-📅 Date : 17 Avril 2026
+Ce projet a été réalisé par :
+
+- **Dalia Remila**  
+- **Aly Dahoud**
+
+dans le cadre du module de programmation R à l’Université de Montpellier, encadré par Jean‑Michel Marin.
+
